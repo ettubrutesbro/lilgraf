@@ -54,9 +54,11 @@ class TrendGraph extends Component {
       let suffix = ''
       if(divideTick){
         tick = tick/divideTick
-        if(divideTick===1000) suffix = 'k' 
+        if(divideTick===1000) suffix = 'k'
+        else if(divideTick===1000000) suffix = 'm' 
       }
       if(tick % 1!==0) tick = parseFloat(tick.toFixed(2))
+      if(tick===0) suffix = ''
       yTicks.push(tick + suffix)
     }
 
