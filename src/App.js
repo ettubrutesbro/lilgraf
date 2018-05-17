@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment'
-import './App.css'; //i dont know how to use styled-components yet so i did vanilla css, sorry
+import './App.css'; //i dont know how to use styled-components yet (used to postCSS / modules) so i did vanilla css, sorry
 
 const data = require('./dataset.json')
 const statsToUse = [
@@ -24,18 +24,19 @@ class TrendGraph extends Component {
   constructor(props){
     super(props)
     this.state = {
+      hoveredDay: null,
       selectedStat: 0
     }
   }
-
-  selectStat = (idx) => {
-    this.setState({
-      selectedStat: idx
-    })
-  }
+  //using react state this way causes a ton of rerenders, hope it doesnt blow up perf, sorry
+      // could ameliorate that with additional react lifecycle stuff but we should see if that's necessary first
+      //im used to managing state differently (mobx) so didnt want to sink time into it here
+  selectStat = (idx) => this.setState({selectedStat: idx})
+  mouseHoveredDay = (idx) => this.setState({hoveredDay: idx})
+  mouseUnhoveredDay = (idx) => this.setState({hoveredDay: null})
 
   render() {
-    const {selectedStat} = this.state
+    const {selectedStat, hoveredDay} = this.state
     const {rangeTop, rangeBottom, divideTick} = statsToUse[selectedStat]
 
     const shownData = data.map((d, i, arr)=>{
@@ -96,7 +97,10 @@ class TrendGraph extends Component {
                 return (
                   <div
                     style = {{width: 100/this.props.xTicks + '%'}} 
-                    className = 'day'>
+                    className = 'day'
+                    onMouseEnter = {()=> this.mouseHoveredDay(i)}
+                    onMouseLeave = {()=> this.mouseUnhoveredDay(i)}
+                  >
 
                     <div 
                       className = 'bar'
@@ -105,7 +109,14 @@ class TrendGraph extends Component {
                         transform: `scaleY(${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))})`,
                       }}
                     />
+                    {hoveredDay === i &&
+                    <div className = 'tooltip'>
+                      <div className = 'date'>{moment(data[i].date).format('MMM Do')}</div>
+                      <div className = 'value'>{shownData[i]} </div>
+                    </div>
+                    }
                   </div>
+                  
                 )
                 })}
                 </div>
