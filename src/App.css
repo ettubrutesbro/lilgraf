@@ -1,0 +1,69 @@
+
+.trendGraph{
+  display: flex;
+
+}
+
+
+.statColumn{
+  width: 200px;
+  border: 1px black solid;
+}
+
+.statColumn .stat{
+  width: 100%;
+}
+
+.statColumn .selected{
+  background: purple;
+  color: white;
+}
+
+.graphBody{
+  position: relative;
+  width: 500px;
+  border: 1px black solid;
+}
+.graphBody .x{
+
+  height: 220px;
+  display: flex;
+  align-items: center;
+  padding: 25px 0;
+}
+.graphBody .statRange{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.graphBody .dates{
+  display: flex;
+  align-items: center;
+  padding-left: 50px;
+}
+
+.graphBody .dates .day{
+  display: flex;
+  justify-content: center;
+  /*padding: 0 10px;*/
+  box-sizing: border-box;
+  overflow: hidden;
+} 
+
+.graphBody .actualGraph{
+  /*interior 'margin' here should be half the x-height of the tick number/letters*/
+  box-sizing: border-box;
+  height: calc(100% - 12px);
+  width: 100%;
+  border: 1px solid green;
+  display: flex;
+}
+.graphBody .actualGraph .graphSeg{
+  /*the funny thing is without absolute positioning this is actually the 'negative space'
+    but that saves the work of having to getDOMNode / width for x-offsets
+  */
+  /*position: absolute;*/
+  bottom: 0;
+}
