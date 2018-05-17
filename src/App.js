@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment'
-import './App.css';
+import './App.css'; //i recommend CSS modules; this vanilla version could create conflicts
 
 const data = require('./dataset.json')
 const statsToUse = [
@@ -45,24 +45,22 @@ class TrendGraph extends Component {
     })
     console.log(shownData)
 
-    let statRange = []
+    let yTicks = []
     const rangediff = (rangeTop - rangeBottom) / (this.props.yTicks-1)
     for(var i = 0; i<this.props.yTicks; i++){
       let tick = rangeTop - (i*rangediff)
       if(tick % 1!==0) tick = tick.toFixed(1)
-      statRange.push(tick)
+      yTicks.push(tick)
     }
 
     return (
-      <div className="trendGraph">
-        <div className = 'statColumn'>
+      <div className="trends">
+        <div className = 'picker'>
           {statsToUse.map((stat,i)=>{
             return(
               <div 
                   key = {stat.title}
                   className = {['stat', selectedStat === i? 'selected' : ''].join(' ')}
-                  // className = {
-                  //   ["stat", this.state.selectedStat===i?'selected' : ''].join(' ')}
                   onClick = {()=>{this.selectStat(i)}}
                 > 
                   {stat.title} 
@@ -70,11 +68,10 @@ class TrendGraph extends Component {
             )
           })}
         </div>
-        <div className = 'graphBody'>
-          <div className =  'x'>
-            <div className = 'statRange'> 
-              {/*4 ticks dividing top and bottom of range (6 total)*/
-                statRange.map((tick)=>{
+        <div className = 'graph'>
+            <div className = 'yTicks'> 
+              {
+                yTicks.map((tick)=>{
                   return(
                     <div 
                       key = {'tick'+tick}
@@ -82,19 +79,16 @@ class TrendGraph extends Component {
                   )
                 })
               }
-              
-              
             </div>
-            <div className = 'actualGraph'>
-              <div className = 'actualActualGraph'>
+            <div className = 'barsDates'>
+              <div className = 'bars'>
               {React.Children.map(Array(this.props.xTicks), (e,i)=> {
                 return <div 
-                  className = 'graphSeg'
+                  className = 'bar'
                   style = {{
                     width: 100/this.props.xTicks + '%',
                     //!important: this fill is the NEGATIVE
                     height: (100 - ((shownData[i]-rangeBottom) / (rangeTop - rangeBottom) * 100)) + '%',
-                    // height: ((shownData[i]-rangeBottom) / (rangeTop - rangeBottom) * 100) + '%',
                     backgroundColor: 'blue'
                   }}
                 />
@@ -114,7 +108,6 @@ class TrendGraph extends Component {
               </div>
             </div>
             
-          </div>
         </div>
 
       </div>

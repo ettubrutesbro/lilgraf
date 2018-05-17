@@ -1,82 +1,79 @@
 
-.trendGraph{
+.trends{
   display: flex;
-
 }
 
-
-.statColumn{
+.trends .picker{
   width: 200px;
   border: 1px black solid;
 }
 
-.statColumn .stat{
-  width: 100%;
-}
+  .trends .picker .stat{
+    width: 100%;
+  }
 
-.statColumn .selected{
-  background: purple;
-  color: white;
-}
+  .trends .picker .selected{
+    background: purple;
+    color: white;
+  }
 
-.graphBody{
+.trends .graph{
   position: relative;
   width: 510px;
   border: 1px black solid;
-}
-.graphBody .x{
 
-  height: 220px;
+      height: 220px;
   display: flex;
   align-items: center;
   padding: 25px 0;
 }
-.graphBody .statRange{
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 60px;
-}
 
-.graphBody .dates{
-  width: 100%;
-  padding: 10px 0;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  /*transform: translateY(100%);*/
-  top: 100%;
-  /*padding-left: 50px;*/
-}
-
-.graphBody .dates .day{
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-} 
-
-.graphBody .actualGraph{
-  /*interior 'margin' here should be half the x-height of the tick number/letters*/
-  box-sizing: border-box;
-  height: calc(100% - 12px);
-  flex-grow: 1;
-  border: 1px solid green;
-  /*display: flex;*/
+  .trends .graph .yTicks{
     display: flex;
-  flex-direction: column;
-  position: relative;
-}
-.graphBody .actualGraph .graphSeg{
-  /*the funny thing is without absolute positioning this is actually the 'negative space'
-    but that saves the work of having to getDOMNode / width for x-offsets
-  */
-  /*position: absolute;*/
-  bottom: 0;
-}
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 60px;
+  }
 
-.graphBody .actualGraph .actualActualGraph{
-  width: 100%; height: 100%;
-  display: flex;
+  .trends .graph .dates{
+    width: 100%;
+    padding: 10px 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    /*transform: translateY(100%);*/
+    top: 100%;
+    /*padding-left: 50px;*/
+  }
 
-}
+    .trends .graph .dates .day{
+      display: flex;
+      justify-content: center;
+      box-sizing: border-box;
+    } 
+
+  .trends .graph .barsDates{
+    /*interior 'margin' here should be half the x-height of the tick number/letters*/
+    box-sizing: border-box;
+    height: calc(100% - 12px);
+    flex-grow: 1;
+    border: 1px solid green;
+    /*display: flex;*/
+      display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+    .trends .graph .barsDates .bars{
+      width: 100%; height: 100%;
+      display: flex;
+
+    }
+      .trends .graph .barsDates .bars .bar{
+        /*the funny thing is without absolute positioning this is actually the 'negative space'
+          but that saves the work of having to getDOMNode / width for x-offsets
+        */
+        /*position: absolute;*/
+        /*bottom: 0;*/
+      }
+
