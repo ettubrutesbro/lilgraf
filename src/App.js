@@ -8,7 +8,7 @@ const statsToUse = [
   //you could make it dynamic to accommodate for crazy outlier values, but the value added
   // of a trend graph is probably to track trends, not outliers and world records, right? 
   {title: 'Kills / game', datalabel: 'kills', rangeTop: 15, rangeBottom: 0},
-  {title: 'Score', datalabel: 'score', rangeTop: 15000, rangeBottom: 0},
+  {title: 'Score', datalabel: 'score', rangeTop: 15000, rangeBottom: 0, divideBy: 1000},
   {title: 'Wins', datalabel: 'placetop1', rangeTop: 12, rangeBottom: 0},
   {title: 'Top 5\'s', datalabel: 'placetop5', rangeTop: 15, rangeBottom: 0},
   {title: 'Top 10\'s', datalabel: 'placetop10', rangeTop: 15, rangeBottom: 0},
@@ -87,8 +87,10 @@ class TrendGraph extends Component {
                   className = 'bar'
                   style = {{
                     width: 100/this.props.xTicks + '%',
-                    //!important: this fill is the NEGATIVE
-                    height: (100 - ((shownData[i]-rangeBottom) / (rangeTop - rangeBottom) * 100)) + '%',
+                    // height: (100 - ((shownData[i]-rangeBottom) / (rangeTop - rangeBottom) * 100)) + '%',
+                    //animation based height?
+                    height: '100%',
+                    transform: `scaleY(${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))})`,
                     backgroundColor: 'blue'
                   }}
                 />

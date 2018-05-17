@@ -70,6 +70,8 @@
 
     }
       .trends .graph .barsDates .bars .bar{
+        transform-origin: 50% 100%;
+        transition: transform .2s;
         /*the funny thing is without absolute positioning this is actually the 'negative space'
           but that saves the work of having to getDOMNode / width for x-offsets
         */
