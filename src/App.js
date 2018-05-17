@@ -93,18 +93,22 @@ class TrendGraph extends Component {
             <div className = 'barsDates'>
               <div className = 'bars'>
               {React.Children.map(Array(this.props.xTicks), (e,i)=> {
-                return <div 
-                  className = 'bar'
-                  style = {{
-                    width: 100/this.props.xTicks + '%',
-                    // height: (100 - ((shownData[i]-rangeBottom) / (rangeTop - rangeBottom) * 100)) + '%',
-                    //animation based height?
-                    height: '100%',
-                    transform: `scaleY(${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))})`,
-                  }}
-                />
-              })}
-              </div>
+                return (
+                  <div
+                    style = {{width: 100/this.props.xTicks + '%'}} 
+                    className = 'day'>
+
+                    <div 
+                      className = 'bar'
+                      style = {{
+                        height: '100%',
+                        transform: `scaleY(${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))})`,
+                      }}
+                    />
+                  </div>
+                )
+                })}
+                </div>
               <div className = 'dates'>
                 {data.slice(0, this.props.xTicks).map((day, i)=>{
                   return(
