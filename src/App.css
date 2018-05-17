@@ -1,20 +1,26 @@
 
 .trends{
-  display: flex;
+  font-family: 'Lato', sans-serif;
+  display: inline-flex;
   font-size: 12px;
+  font-weight: 400px;
 }
 
 .trends .picker{
-  width: 200px;
-  border: 1px black solid;
+  width: 115px;
+  box-sizing: border-box;
+
+  /*border: 1px black solid;*/
 }
 
   .trends .picker .stat{
+    padding: 5px 15px;
+    box-sizing: border-box;
     width: 100%;
   }
 
   .trends .picker .selected{
-    background: purple;
+    background: #c579dc;
     color: white;
   }
 
@@ -22,11 +28,11 @@
   position: relative;
   width: 510px;
   border: 1px black solid;
-
+  box-sizing: border-box;
   height: 220px;
   display: flex;
   align-items: center;
-  padding: 25px 0;
+  padding: 10px 0 25px 0;
 }
 
   .trends .graph .yTicks{
@@ -34,16 +40,17 @@
     height: 100%;
     flex-direction: column;
     justify-content: space-between;
+    padding-left: 8px;
     width: 50px;
   }
     .trends .graph .yTicks .tick::after{
       content: '';
       position: absolute;
       right: 0;
-      transform: translateY(6px);
+      transform: translateY(8px);
         /*this is based on 12px font size*/
-      width: 460px;
-      height: 2px;
+      width: 449px;
+      height: 1px;
       border-top: 1px solid #d7d7d7;
     }
 
@@ -64,7 +71,7 @@
 
   .trends .graph .barsDates{
       box-sizing: border-box;
-    /*interior 'margin' here should be half the x-height of the tick number/letters*/
+    /*height should be the x-height of the tick number/letters for matching*/
     height: calc(100% - 12px); 
       /*based on font-size*/
     flex-grow: 1;

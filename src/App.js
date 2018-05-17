@@ -7,8 +7,9 @@ const statsToUse = [
   //static ranges allow user-to-user comparisons to hold more value
   //you could make it dynamic to accommodate for crazy outlier values, but the value added
   // of a trend graph is probably to track trends, not outliers and world records, right? 
-  {title: 'Kills / game', datalabel: 'kills', rangeTop: 18, rangeBottom: 0},
+  
   {title: 'Score', datalabel: 'score', rangeTop: 20000, rangeBottom: 0, divideTick: 1000},
+  {title: 'Kills / game', datalabel: 'kills', rangeTop: 18, rangeBottom: 0},
   {title: 'Wins', datalabel: 'placetop1', rangeTop: 12, rangeBottom: 0},
   {title: 'Top 5\'s', datalabel: 'placetop5', rangeTop: 15, rangeBottom: 0},
   //TODO: using top 12 here and not 10/25 because those are null values only in the provided data
