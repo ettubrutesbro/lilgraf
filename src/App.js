@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment'
-import './App.css'; //i recommend CSS modules; this vanilla version could create conflicts
+import './App.css'; //i dont know how to use styled-components yet so i did vanilla css, sorry
 
 const data = require('./dataset.json')
 const statsToUse = [
   //static ranges allow user-to-user comparisons to hold more value
   //you could make it dynamic to accommodate for crazy outlier values, but the value added
   // of a trend graph is probably to track trends, not outliers and world records, right? 
-  
+
   {title: 'Score', datalabel: 'score', rangeTop: 20000, rangeBottom: 0, divideTick: 1000},
   {title: 'Kills / game', datalabel: 'kills', rangeTop: 18, rangeBottom: 0},
   {title: 'Wins', datalabel: 'placetop1', rangeTop: 12, rangeBottom: 0},
@@ -101,7 +101,6 @@ class TrendGraph extends Component {
                     //animation based height?
                     height: '100%',
                     transform: `scaleY(${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))})`,
-                    backgroundColor: 'blue'
                   }}
                 />
               })}
