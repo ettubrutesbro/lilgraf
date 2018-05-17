@@ -21,7 +21,7 @@
 
 .graphBody{
   position: relative;
-  width: 500px;
+  width: 510px;
   border: 1px black solid;
 }
 .graphBody .x{
@@ -36,29 +36,36 @@
   height: 100%;
   flex-direction: column;
   justify-content: space-between;
+  width: 60px;
 }
 
 .graphBody .dates{
+  width: 100%;
+  padding: 10px 0;
+  position: absolute;
   display: flex;
   align-items: center;
-  padding-left: 50px;
+  /*transform: translateY(100%);*/
+  top: 100%;
+  /*padding-left: 50px;*/
 }
 
 .graphBody .dates .day{
   display: flex;
   justify-content: center;
-  /*padding: 0 10px;*/
   box-sizing: border-box;
-  overflow: hidden;
 } 
 
 .graphBody .actualGraph{
   /*interior 'margin' here should be half the x-height of the tick number/letters*/
   box-sizing: border-box;
   height: calc(100% - 12px);
-  width: 100%;
+  flex-grow: 1;
   border: 1px solid green;
-  display: flex;
+  /*display: flex;*/
+    display: flex;
+  flex-direction: column;
+  position: relative;
 }
 .graphBody .actualGraph .graphSeg{
   /*the funny thing is without absolute positioning this is actually the 'negative space'
@@ -66,4 +73,10 @@
   */
   /*position: absolute;*/
   bottom: 0;
+}
+
+.graphBody .actualGraph .actualActualGraph{
+  width: 100%; height: 100%;
+  display: flex;
+
 }

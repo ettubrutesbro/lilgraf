@@ -7,7 +7,7 @@ const statsToUse = [
   //static ranges allow user-to-user comparisons to hold more value
   //you could make it dynamic to accommodate for crazy outlier values, but the value added
   // of a trend graph is probably to track trends, not outliers and world records, right? 
-  {title: 'Kills / game', datalabel: 'kills', rangeTop: 18, rangeBottom: 0},
+  {title: 'Kills / game', datalabel: 'kills', rangeTop: 15, rangeBottom: 0},
   {title: 'Score', datalabel: 'score', rangeTop: 15000, rangeBottom: 0},
   {title: 'Wins', datalabel: 'placetop1', rangeTop: 12, rangeBottom: 0},
   {title: 'Top 5\'s', datalabel: 'placetop5', rangeTop: 15, rangeBottom: 0},
@@ -86,6 +86,7 @@ class TrendGraph extends Component {
               
             </div>
             <div className = 'actualGraph'>
+              <div className = 'actualActualGraph'>
               {React.Children.map(Array(this.props.xTicks), (e,i)=> {
                 return <div 
                   className = 'graphSeg'
@@ -98,20 +99,21 @@ class TrendGraph extends Component {
                   }}
                 />
               })}
+              </div>
+              <div className = 'dates'>
+                {data.slice(0, this.props.xTicks).map((day, i)=>{
+                  return(
+                    <div
+                      style = {{
+                        width: (100 / this.props.xTicks) + '%',
+                        visibility: i%2? 'hidden' : 'visible'
+                      }}
+                     className = 'day'> {moment(day.date).format('M/D')} </div>
+                  )
+                })}
+              </div>
             </div>
             
-          </div>
-          <div className = 'dates'>
-          {data.slice(0, this.props.xTicks).map((day, i)=>{
-            return(
-              <div
-                style = {{
-                  width: (100 / this.props.xTicks) + '%',
-                  visibility: i%2? 'hidden' : 'visible'
-                }}
-               className = 'day'> {moment(day.date).format('M/D')} </div>
-            )
-          })}
           </div>
         </div>
 
