@@ -133,7 +133,8 @@
         position: relative;
         height: 100%;
         cursor: pointer;
-        padding-right: 2px;
+        padding: 0 0.5%;
+        /*margin-left: 1px;*/
         box-sizing: border-box;
       }
         .trends .graph .barsDates .bars .day:hover{
