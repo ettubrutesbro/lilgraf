@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment'
 import './App.css'; //i dont know how to use styled-components yet (used to postCSS / modules) so i did vanilla css, sorry
 
-const data = require('./dataset.json')
+const data = require('./dataset.json').reverse()
 const statsToUse = [
   //static ranges allow user-to-user comparisons to hold more value
   //you could make it dynamic to accommodate for crazy outlier values, but the value added
@@ -43,8 +43,8 @@ class TrendGraph extends Component {
       const label = statsToUse[selectedStat].datalabel
       let divisor = 1
       //if kills, the divisor is games played in the same day...
-      if(label === 'kills') divisor = i<arr.length-1? d.stats.matches_played - arr[i+1].stats.matches_played : 1
-      return i<arr.length-1? (d.stats[label] - arr[i+1].stats[label]) / divisor : 0
+      if(label === 'kills') divisor = i>0? d.stats.matches_played - arr[i-1].stats.matches_played : 1
+      return i>0? (d.stats[label] - arr[i-1].stats[label]) / divisor : 0
     })
     console.log(shownData)
 
@@ -173,7 +173,8 @@ class TrendGraph extends Component {
 
 TrendGraph.defaultProps = {
   yTicks: 6,
-  xTicks: 15, //odd numbers allow for alternating or midpoint 
+  xTicks: 15, //odd numbers allow for alternating or midpoint,
+  userName: 'UserName' 
 }
 
 export default TrendGraph;
