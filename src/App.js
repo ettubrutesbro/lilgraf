@@ -112,6 +112,8 @@ class TrendGraph extends Component {
             <div className = 'barsDates'>
               <div className = 'bars'>
               {React.Children.map(Array(this.props.xTicks), (e,i)=> {
+                //starting position is not 0
+                const it = ((data.length)-this.props.xTicks) + i
                 return (
                   <div
                     style = {{width: 100/this.props.xTicks + '%'}} 
@@ -124,23 +126,23 @@ class TrendGraph extends Component {
                       className = 'bar'
                       style = {{
                         height: '100%',
-                        transform: `scaleY(${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))})`,
+                        transform: `scaleY(${((shownData[it]-rangeBottom) / (rangeTop - rangeBottom))})`,
                       }}
                     />
                     {hoveredDay === i &&
                     <div 
                         className = {['tooltip', i>(this.props.xTicks*.66)?'leftSide':''].join(' ')}
-                        style = {{bottom: `${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))*100}%`}}
+                        style = {{bottom: `${((shownData[it]-rangeBottom) / (rangeTop - rangeBottom))*100}%`}}
                     >
-                      <div className = 'date'>{moment(data[i].date).format('MMM Do')}</div>
+                      <div className = 'date'>{moment(data[it].date).format('MMM Do')}</div>
                       <div className = 'value'>
                       {statsToUse[selectedStat].datalabel ==='minutesPlayed' && 
                         <React.Fragment>
-                              {`${Math.floor(shownData[i]/60)}h ${shownData[i] % 60}m`}
+                              {`${Math.floor(shownData[it]/60)}h ${shownData[it] % 60}m`}
                         </React.Fragment>
                       } 
                       {statsToUse[selectedStat].datalabel !== 'minutesPlayed' && 
-                        parseFloat(shownData[i].toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        parseFloat(shownData[it].toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                       } 
                       </div>
                     </div>
@@ -151,7 +153,7 @@ class TrendGraph extends Component {
                 })}
                 </div>
               <div className = 'dates'>
-                {data.slice(0, this.props.xTicks).map((day, i)=>{
+                {data.slice((data.length)-this.props.xTicks).map((day, i)=>{
                   return(
                     <div
                       style = {{
