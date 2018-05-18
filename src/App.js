@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import moment from 'moment'
 import './App.css'; //i dont know how to use styled-components yet (used to postCSS / modules) so i did vanilla css, sorry
 
-const data = require('./dataset.json').reverse()
+const sampleset = require('./dataset.json').reverse()
 const statsToUse = [
   //static ranges allow user-to-user comparisons to hold more value
   //you could make it dynamic to accommodate for crazy outlier values or new best averages
   {title: 'Score', datalabel: 'score', trendName: 'Scoring', rangeTop: 20000, rangeBottom: 0, divideTick: 1000},
   {title: 'Kills per game', datalabel: 'kills', trendName: 'Kills', rangeTop: 20, rangeBottom: 0},
   {title: 'Wins', datalabel: 'placetop1', trendName: 'Wins', rangeTop: 20, rangeBottom: 0},
-  {title: 'Top 5\'s', datalabel: 'placetop5', trendName: 'Top 5 Finishes', rangeTop: 20, rangeBottom: 0},
+  {title: 'Top 5\'s', datalabel: 'placetop5', trendName: '# of Top 5 Finishes', rangeTop: 20, rangeBottom: 0},
   //TODO: using top 12 here and not 10/25 because those are null values only in the provided data
-  {title: 'Top 12\'s', datalabel: 'placetop12', trendName: 'Top 12 Finishes', rangeTop: 20, rangeBottom: 0},
-  // {title: 'Top 10\'s', datalabel: 'placetop10', rangeTop: 15, rangeBottom: 0},
-  // {title: 'Top 25\'s', datalabel: 'placetop25', rangeTop: 15, rangeBottom: 0},
+  {title: 'Top 12\'s', datalabel: 'placetop12', trendName: '# of Top 12 Finishes', rangeTop: 20, rangeBottom: 0},
+  // {title: 'Top 10\'s', datalabel: 'placetop10', trendName: '# of Top 10 Finishes', rangeTop: 15, rangeBottom: 0},
+  // {title: 'Top 25\'s', datalabel: 'placetop25', trendName: '# of Top 25 Finishes',  rangeTop: 15, rangeBottom: 0},
   {title: 'Time Played', datalabel: 'minutesPlayed', trendName: 'Playtime', rangeTop: 600, rangeBottom: 0},
-  {title: 'Games Played', datalabel: 'matchesPlayed', trendName: 'Games Played', rangeTop: 50, rangeBottom: 0}
+  {title: 'Games Played', datalabel: 'matchesPlayed', trendName: '# of Games Played', rangeTop: 50, rangeBottom: 0}
 ]
 
 class TrendGraph extends Component {
@@ -34,6 +34,7 @@ class TrendGraph extends Component {
   mouseUnhoveredDay = (idx) => this.setState({hoveredDay: null})
 
   render() {
+    const {data} = this.props
     const {selectedStat, hoveredDay} = this.state
     const {rangeTop, rangeBottom, divideTick} = statsToUse[selectedStat]
     const stat = statsToUse[selectedStat].datalabel
@@ -75,12 +76,13 @@ class TrendGraph extends Component {
             Trends <span className = 'deemphasized'> in </span> {this.props.userName}'s {statsToUse[selectedStat].trendName} 
           </h3>
           <select className = 'modeSelector'
+            value = {this.props.mode}
             onChange = {()=>{alert('TODO!')}}
             //TODO: insert logic here and options / conditionals below
           >
-            <option selected = {this.props.mode === 'duo'}> Duo </option>
-            <option selected = {this.props.mode === 'othermode'}> Other mode </option>
-            <option selected = {this.props.mode === 'etc'}> Etc </option>
+            <option value = 'duo'> Duo </option>
+            <option value = 'othermode'> Other mode </option>
+            <option value = 'etc'> Etc </option>
           </select>
         </div>
         <div className = 'picker'>
@@ -162,6 +164,7 @@ class TrendGraph extends Component {
                 {data.slice((data.length)-this.props.xTicks).map((day, i)=>{
                   return(
                     <div
+                      key = {day.date}
                       style = {{
                         width: (100 / this.props.xTicks) + '%',
                         visibility: i%2? 'hidden' : 'visible'
@@ -182,7 +185,9 @@ class TrendGraph extends Component {
 TrendGraph.defaultProps = {
   yTicks: 6,
   xTicks: 15, //odd numbers allow for alternating or midpoint,
-  userName: 'UserName' 
+  userName: 'UserName',
+  data: sampleset,
+  mode: 'duo' 
 }
 
 export default TrendGraph;
