@@ -110,9 +110,9 @@ class TrendGraph extends Component {
                       }}
                     />
                     {hoveredDay === i &&
-                    <div className = 'tooltip'>
+                    <div className = {['tooltip', i>(this.props.xTicks*.66)?'leftSide':''].join(' ')}>
                       <div className = 'date'>{moment(data[i].date).format('MMM Do')}</div>
-                      <div className = 'value'>{shownData[i]} </div>
+                      <div className = 'value'>{parseFloat(shownData[i].toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </div>
                     </div>
                     }
                   </div>

@@ -112,11 +112,15 @@
           transition: transform .2s;
           background-color: #728fbb;
           transition: background .1s, transform .3s;
+          border-right: 1px solid white;
+          /*border-bottom: 1px solid white;*/
+          box-sizing: border-box;
         }
         .trends .graph .barsDates .bars .day .tooltip{
-          width: 100px;
+          /*width: 100px;*/
           border: 1px solid #e9eff7;
           position: absolute;
+          z-index: 2;
           left: 100%;
           margin-left: 15px;
           padding: 10px;
@@ -124,6 +128,43 @@
           border-radius: 2px;
           box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
           top: 0;
+          animation: tooltipAppearFromLeft .15s forwards;
+          white-space: nowrap;
+        }
+        .trends .graph .barsDates .bars .day .tooltip.leftSide{
+          right: 100%; margin-right: 15px;
+          left: auto; margin-left: 0;
+          animation: tooltipAppearFromRight .15s forwards;
+        }
+        .trends .graph .barsDates .bars .day .tooltip::before{
+          content: '';
+          position: absolute;
+          left: -20px;
+          top: calc(50% - 10px);
+          width: 0; height: 0;
+          border: 10px solid transparent;
+          border-right: 10px solid #e9eff7;
+        }
+        .trends .graph .barsDates .bars .day .tooltip.leftSide::before{
+          border-right: 10px solid transparent;
+          border-left: 10px solid #e9eff7;
+          left: auto;
+          right: -20px;
+        }
+        .trends .graph .barsDates .bars .day .tooltip::after{
+          content: '';
+          position: absolute;
+          left: -16px;
+          top: calc(50% - 8px);
+          width: 0; height: 0;
+          border: 8px solid transparent;
+          border-right: 8px solid white;
+        }
+        .trends .graph .barsDates .bars .day .tooltip.leftSide::after{
+          left: auto;
+          right: -16px;
+          border-right: 8px solid transparent;
+          border-left: 8px solid white;
         }
         .trends .graph .barsDates .bars .day .tooltip .date{
           font-size: 15px;
@@ -134,3 +175,11 @@
           color: #355282;
         }
 
+@keyframes tooltipAppearFromLeft{
+  from {transform: translateX(-15px); opacity: 0.5;}
+  to {transform: translateX(0); opacity: 1;}
+}
+@keyframes tooltipAppearFromRight{
+  from {transform: translateX(15px); opacity: 0.5;}
+  to {transform: translateX(0); opacity: 1;}
+}
