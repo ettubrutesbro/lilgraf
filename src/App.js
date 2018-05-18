@@ -5,17 +5,17 @@ import './App.css'; //i dont know how to use styled-components yet (used to post
 const data = require('./dataset.json').reverse()
 const statsToUse = [
   //static ranges allow user-to-user comparisons to hold more value
-  //you could make it dynamic to accommodate for crazy outlier values, but the value added
-  // of a trend graph is probably to track trends, not outliers and world records, right? 
-  {title: 'Score', datalabel: 'score', fullName: '', rangeTop: 20000, rangeBottom: 0, divideTick: 1000},
-  {title: 'Kills per game', datalabel: 'kills', fullName: '', rangeTop: 20, rangeBottom: 0},
-  {title: 'Wins', datalabel: 'placetop1', fullName: '', rangeTop: 20, rangeBottom: 0},
-  {title: 'Top 5\'s', datalabel: 'placetop5', fullName: '', rangeTop: 20, rangeBottom: 0},
+  //you could make it dynamic to accommodate for crazy outlier values or new best averages
+  {title: 'Score', datalabel: 'score', trendName: 'Scoring', rangeTop: 20000, rangeBottom: 0, divideTick: 1000},
+  {title: 'Kills per game', datalabel: 'kills', trendName: 'Kills', rangeTop: 20, rangeBottom: 0},
+  {title: 'Wins', datalabel: 'placetop1', trendName: 'Wins', rangeTop: 20, rangeBottom: 0},
+  {title: 'Top 5\'s', datalabel: 'placetop5', trendName: 'Top 5 Finishes', rangeTop: 20, rangeBottom: 0},
   //TODO: using top 12 here and not 10/25 because those are null values only in the provided data
-  {title: 'Top 12\'s', datalabel: 'placetop12', fullName: '', rangeTop: 20, rangeBottom: 0},
+  {title: 'Top 12\'s', datalabel: 'placetop12', trendName: 'Top 12 Finishes', rangeTop: 20, rangeBottom: 0},
   // {title: 'Top 10\'s', datalabel: 'placetop10', rangeTop: 15, rangeBottom: 0},
   // {title: 'Top 25\'s', datalabel: 'placetop25', rangeTop: 15, rangeBottom: 0},
-  {title: 'Time Played', datalabel: 'minutesPlayed', fullName: '', rangeTop: 600, rangeBottom: 0}
+  {title: 'Time Played', datalabel: 'minutesPlayed', trendName: 'Playtime', rangeTop: 600, rangeBottom: 0},
+  {title: 'Games Played', datalabel: 'matchesPlayed', trendName: 'Games Played', rangeTop: 50, rangeBottom: 0}
 ]
 
 class TrendGraph extends Component {
@@ -29,7 +29,6 @@ class TrendGraph extends Component {
   }
   //using react state this way causes a ton of rerenders, hope it doesnt blow up perf, sorry
       // could ameliorate that with additional react lifecycle stuff but we should see if that's necessary first
-      //im used to managing state differently (mobx) so didnt want to sink time into it here
   selectStat = (idx) => this.setState({selectedStat: idx})
   mouseHoveredDay = (idx) => this.setState({hoveredDay: idx})
   mouseUnhoveredDay = (idx) => this.setState({hoveredDay: null})
@@ -37,14 +36,14 @@ class TrendGraph extends Component {
   render() {
     const {selectedStat, hoveredDay} = this.state
     const {rangeTop, rangeBottom, divideTick} = statsToUse[selectedStat]
+    const stat = statsToUse[selectedStat].datalabel
 
     const shownData = data.map((d, i, arr)=>{
       //converts data into per-day, divides if necessary
-      const label = statsToUse[selectedStat].datalabel
       let divisor = 1
       //if kills, the divisor is games played in the same day...
-      if(label === 'kills') divisor = i>0? d.stats.matches_played - arr[i-1].stats.matches_played : 1
-      return i>0? (d.stats[label] - arr[i-1].stats[label]) / divisor : 0
+      if(stat === 'kills') divisor = i>0? d.stats.matches_played - arr[i-1].stats.matches_played : 1
+      return i>0? (d.stats[stat] - arr[i-1].stats[stat]) / divisor : 0
     })
     console.log(shownData)
 
@@ -60,7 +59,7 @@ class TrendGraph extends Component {
       }
       if(tick % 1!==0) tick = parseFloat(tick.toFixed(2))
       if(tick===0) suffix = ''
-      if(statsToUse[selectedStat].datalabel === 'minutesPlayed'){
+      if(stat === 'minutesPlayed'){
         const hrs = Math.floor(tick / 60)
         const min = tick % 60
         if(min > 0) yTicks.push(hrs+'h '+min+'m')
@@ -73,7 +72,7 @@ class TrendGraph extends Component {
       <div className="trends">
         <div className = 'header'>
           <h3>
-            {this.props.userName}'s Solo: {statsToUse[selectedStat].title} Trends
+            Trends <span className = 'deemphasized'> in </span> {this.props.userName}'s {statsToUse[selectedStat].trendName} 
           </h3>
           <select className = 'modeSelector'
             onChange = {()=>{alert('TODO!')}}
@@ -134,16 +133,23 @@ class TrendGraph extends Component {
                         className = {['tooltip', i>(this.props.xTicks*.66)?'leftSide':''].join(' ')}
                         style = {{bottom: `${((shownData[it]-rangeBottom) / (rangeTop - rangeBottom))*100}%`}}
                     >
-                      <div className = 'date'>{moment(data[it].date).format('MMM Do')}</div>
+                      <div className = 'date'>{moment(data[it].date).format('MMM D')}</div>
                       <div className = 'value'>
-                      {statsToUse[selectedStat].datalabel ==='minutesPlayed' && 
+                      {stat ==='minutesPlayed' && 
                         <React.Fragment>
                               {`${Math.floor(shownData[it]/60)}h ${shownData[it] % 60}m`}
                         </React.Fragment>
                       } 
-                      {statsToUse[selectedStat].datalabel !== 'minutesPlayed' && 
+                      {stat !== 'minutesPlayed' && 
                         parseFloat(shownData[it].toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                      } 
+                      }
+                      <span className = 'unit'>
+                        {stat === 'placetop1' && 'Wins'} 
+                        {(stat === 'placetop5' || stat === 'placetop10' || stat === 'placetop12' || stat === 'placetop25') && 'Games'}
+                        {stat === 'kills' && 'Kills / game'}
+                        {stat === 'score' && 'Points'}
+                        {stat === 'matchesPlayed' && 'Games'}
+                      </span>
                       </div>
                     </div>
                     }

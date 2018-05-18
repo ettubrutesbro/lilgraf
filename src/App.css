@@ -7,7 +7,7 @@
   color: #4A4A4A;
   flex-wrap: wrap;
   width: 655px;
-
+  letter-spacing: 0.017rem;
 }
 
 .trends * {
@@ -30,6 +30,10 @@
       font-weight: 700px;
       margin: 0; padding: 0; line-height: auto;
     }
+      .trends .header h3 .deemphasized{
+        font-weight: 400;
+        color: #e9eff7;
+      }
     .trends .header .modeSelector{
       font-family: 'Lato', sans-serif;
       font-size: 14px;
@@ -176,12 +180,19 @@
         }
 
         .trends .graph .barsDates .bars .day .tooltip .date{
-          font-size: 15px;
+          font-size: 14px;
         }
         .trends .graph .barsDates .bars .day .tooltip .value{
           font-size: 26px;
           font-weight: 700;
           color: #355282;
+        }
+        .trends .graph .barsDates .bars .day .tooltip .value .unit{
+          margin-left: 4px;
+          color: #718cb4;
+          font-size: 14px;
+          font-weight: 400;
+          /*margin-bottom: 4px;*/
         }
 
 @keyframes tooltipAppearFromLeft{
