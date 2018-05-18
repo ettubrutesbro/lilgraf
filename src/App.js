@@ -75,8 +75,13 @@ class TrendGraph extends Component {
           <h3>
             SypherPK's Solo: Score Trends
           </h3>
-          <select className = 'modeSelector'>
-            {this.props.mode}
+          <select className = 'modeSelector'
+            onChange = {()=>{alert('TODO!')}}
+            //TODO: insert logic here and options / conditionals below
+          >
+            <option selected = {this.props.mode === 'duo'}> Duo </option>
+            <option selected = {this.props.mode === 'othermode'}> Other mode </option>
+            <option selected = {this.props.mode === 'etc'}> Etc </option>
           </select>
         </div>
         <div className = 'picker'>
@@ -123,7 +128,10 @@ class TrendGraph extends Component {
                       }}
                     />
                     {hoveredDay === i &&
-                    <div className = {['tooltip', i>(this.props.xTicks*.66)?'leftSide':''].join(' ')}>
+                    <div 
+                        className = {['tooltip', i>(this.props.xTicks*.66)?'leftSide':''].join(' ')}
+                        style = {{bottom: `${((shownData[i]-rangeBottom) / (rangeTop - rangeBottom))*100}%`}}
+                    >
                       <div className = 'date'>{moment(data[i].date).format('MMM Do')}</div>
                       <div className = 'value'>
                       {statsToUse[selectedStat].datalabel ==='minutesPlayed' && 

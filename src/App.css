@@ -30,6 +30,18 @@
       font-weight: 700px;
       margin: 0; padding: 0; line-height: auto;
     }
+    .trends .header .modeSelector{
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      outline: none; border: none; background: transparent;
+      text-align-last: end; color: white;
+      cursor: pointer;
+    }
+    .trends .header .modeSelector option{
+      color: #355282;
+      font-weight: 400;
+    }
 
 .trends .picker{
   width: 115px;
@@ -121,6 +133,8 @@
         position: relative;
         height: 100%;
         cursor: pointer;
+        padding-right: 2px;
+        box-sizing: border-box;
       }
         .trends .graph .barsDates .bars .day:hover{
           background: rgba(66,180,255, 0.2);
@@ -134,7 +148,7 @@
           transition: transform .2s;
           background-color: #728fbb;
           transition: background .1s, transform .3s;
-          border-right: 1px solid white;
+          /*border-right: 1px solid white;*/
           /*border-bottom: 1px solid white;*/
           box-sizing: border-box;
         }
@@ -144,50 +158,22 @@
           position: absolute;
           z-index: 2;
           left: 100%;
-          margin-left: 15px;
+          margin-left: 0;
           padding: 10px;
-          background: rgba(255,255,255,0.85);
-          border-radius: 2px;
-          box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
-          top: 0;
+          background: rgba(255,255,255,0.9);
+          border-radius: 4px 4px 4px 0;
+          box-shadow: 0px 1px 2px rgba(0,0,0,0.2);
+          pointer-events: none;
+          /*top: 0;*/
           animation: tooltipAppearFromLeft .15s forwards;
           white-space: nowrap;
         }
         .trends .graph .barsDates .bars .day .tooltip.leftSide{
-          right: 100%; margin-right: 15px;
+          right: 100%; margin-right: 0;
           left: auto; margin-left: 0;
           animation: tooltipAppearFromRight .15s forwards;
         }
-        .trends .graph .barsDates .bars .day .tooltip::before{
-          content: '';
-          position: absolute;
-          left: -20px;
-          top: calc(50% - 10px);
-          width: 0; height: 0;
-          border: 10px solid transparent;
-          border-right: 10px solid #e9eff7;
-        }
-        .trends .graph .barsDates .bars .day .tooltip.leftSide::before{
-          border-right: 10px solid transparent;
-          border-left: 10px solid #e9eff7;
-          left: auto;
-          right: -20px;
-        }
-        .trends .graph .barsDates .bars .day .tooltip::after{
-          content: '';
-          position: absolute;
-          left: -16px;
-          top: calc(50% - 8px);
-          width: 0; height: 0;
-          border: 8px solid transparent;
-          border-right: 8px solid white;
-        }
-        .trends .graph .barsDates .bars .day .tooltip.leftSide::after{
-          left: auto;
-          right: -16px;
-          border-right: 8px solid transparent;
-          border-left: 8px solid white;
-        }
+
         .trends .graph .barsDates .bars .day .tooltip .date{
           font-size: 15px;
         }
@@ -198,10 +184,10 @@
         }
 
 @keyframes tooltipAppearFromLeft{
-  from {transform: translateX(-15px); opacity: 0.5;}
-  to {transform: translateX(0); opacity: 1;}
+  from {transform: translate(-15px,25px); opacity: 0.5;}
+  to {transform: translate(0,10px); opacity: 1;}
 }
 @keyframes tooltipAppearFromRight{
-  from {transform: translateX(15px); opacity: 0.5;}
-  to {transform: translateX(0); opacity: 1;}
+  from {transform: translate(15px,25px); opacity: 0.5;}
+  to {transform: translate(0,10px); opacity: 1;}
 }
