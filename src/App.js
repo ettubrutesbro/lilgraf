@@ -7,16 +7,15 @@ const statsToUse = [
   //static ranges allow user-to-user comparisons to hold more value
   //you could make it dynamic to accommodate for crazy outlier values, but the value added
   // of a trend graph is probably to track trends, not outliers and world records, right? 
-
   {title: 'Score', datalabel: 'score', rangeTop: 20000, rangeBottom: 0, divideTick: 1000},
-  {title: 'Kills / game', datalabel: 'kills', rangeTop: 18, rangeBottom: 0},
-  {title: 'Wins', datalabel: 'placetop1', rangeTop: 12, rangeBottom: 0},
-  {title: 'Top 5\'s', datalabel: 'placetop5', rangeTop: 15, rangeBottom: 0},
+  {title: 'Kills / game', datalabel: 'kills', rangeTop: 20, rangeBottom: 0},
+  {title: 'Wins', datalabel: 'placetop1', rangeTop: 20, rangeBottom: 0},
+  {title: 'Top 5\'s', datalabel: 'placetop5', rangeTop: 20, rangeBottom: 0},
   //TODO: using top 12 here and not 10/25 because those are null values only in the provided data
-  {title: 'Top 12\'s', datalabel: 'placetop12', rangeTop: 25, rangeBottom: 0},
+  {title: 'Top 12\'s', datalabel: 'placetop12', rangeTop: 20, rangeBottom: 0},
   // {title: 'Top 10\'s', datalabel: 'placetop10', rangeTop: 15, rangeBottom: 0},
   // {title: 'Top 25\'s', datalabel: 'placetop25', rangeTop: 15, rangeBottom: 0},
-  {title: 'Time Played', datalabel: 'minutesPlayed', rangeTop: 720, rangeBottom: 0}
+  {title: 'Time Played', datalabel: 'minutesPlayed', rangeTop: 600, rangeBottom: 0}
 ]
 
 class TrendGraph extends Component {
@@ -25,7 +24,7 @@ class TrendGraph extends Component {
     super(props)
     this.state = {
       hoveredDay: null,
-      selectedStat: 0
+      selectedStat: 0,
     }
   }
   //using react state this way causes a ton of rerenders, hope it doesnt blow up perf, sorry
@@ -61,11 +60,25 @@ class TrendGraph extends Component {
       }
       if(tick % 1!==0) tick = parseFloat(tick.toFixed(2))
       if(tick===0) suffix = ''
-      yTicks.push(tick + suffix)
+      if(statsToUse[selectedStat].datalabel === 'minutesPlayed'){
+        const hrs = Math.floor(tick / 60)
+        const min = tick % 60
+        if(min > 0) yTicks.push(hrs+'h '+min+'m')
+        else yTicks.push(hrs+'h')
+      }
+      else yTicks.push(tick + suffix)
     }
 
     return (
       <div className="trends">
+        <div className = 'header'>
+          <h3>
+            SypherPK's Solo: Score Trends
+          </h3>
+          <select className = 'modeSelector'>
+            {this.props.mode}
+          </select>
+        </div>
         <div className = 'picker'>
           {statsToUse.map((stat,i)=>{
             return(
@@ -112,7 +125,16 @@ class TrendGraph extends Component {
                     {hoveredDay === i &&
                     <div className = {['tooltip', i>(this.props.xTicks*.66)?'leftSide':''].join(' ')}>
                       <div className = 'date'>{moment(data[i].date).format('MMM Do')}</div>
-                      <div className = 'value'>{parseFloat(shownData[i].toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </div>
+                      <div className = 'value'>
+                      {statsToUse[selectedStat].datalabel ==='minutesPlayed' && 
+                        <React.Fragment>
+                              {`${Math.floor(shownData[i]/60)}h ${shownData[i] % 60}m`}
+                        </React.Fragment>
+                      } 
+                      {statsToUse[selectedStat].datalabel !== 'minutesPlayed' && 
+                        parseFloat(shownData[i].toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      } 
+                      </div>
                     </div>
                     }
                   </div>
